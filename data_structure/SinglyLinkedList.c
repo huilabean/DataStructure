@@ -6,16 +6,37 @@ typedef struct node {
 	int data;
 } Node;
 
-Node* head;
+Node* head = NULL;
+Node* tail = NULL;
 
+void init_node();
+void insert_node_first(int data);
+void insert_node_last(int data);
+void destroy_node_all();
+void view_data_all();
+
+int main()
+{
+	init_node();
+	//insert_node_first(10);
+	//insert_node_first(20);
+	insert_node_last(60);
+	insert_node_first(20);
+	insert_node_last(70);
+	insert_node_last(80);
+
+	view_data_all();
+	printf("\n");
+	destroy_node_all();
+}
 
 void init_node()
 {
 	head = malloc(sizeof(Node));
 	if (head != NULL)
 	{
-		head->next = NULL;
-		head->data = 0;
+		head->next = tail;
+		printf("create head and tail\n");
 	}
 	else
 	{
@@ -40,79 +61,82 @@ void insert_node_first(int data)
 
 void insert_node_last(int data)
 {
-	Node* currentNode = head->next;
-	Node* newNode;
-
-	if (currentNode == NULL)
+	Node* newNode = malloc(sizeof(Node));
+	Node* target = head;
+	while(target->next != tail)
 	{
-		newNode = malloc(sizeof(Node));
-		if (newNode != NULL)
-		{
-			currentNode = newNode;
-			currentNode->next = NULL;
-			currentNode->data = data;
-		}
-		else
-		{
-			// Memory was not allocated.
-		}
+		target = target->next;
 	}
-	else
-	{
-		while (currentNode != NULL)
-		{
-			currentNode = currentNode->next;
-		}
 
-		newNode = malloc(sizeof(Node));
-		if (newNode != NULL)
-		{
-			currentNode = newNode;
-			newNode->next = NULL;
-			newNode->data = data;
-		}
-		else
-		{
-			// Memory was not allocated.
-		}
+	if (newNode != NULL)
+	{
+		target->next = newNode;
+		newNode->next = tail;
+		newNode->data = data;
 	}
 }
 
-void destroy_node()
+void destroy_node_all()
 {
-	Node* target;
-	while (head->next != NULL)
+	while (head->next != tail)
 	{
-		target = head->next;
+		Node* target = head->next;
 		head->next = target->next;
-		printf("destroy node data: %d\n", target->data);
+		printf("destroy target %d\n", target->data);
 		free(target);
 	}
 
+	printf("destroy head and tail\n");
 	free(head);
-	printf("destroy node head\n");
+	free(tail);
 }
 
-int main(void)
+void view_data_all()
 {
-	Node* current;
-	init_node();
-
-	insert_node_first(10);
-	insert_node_last(20);
-
-	current = head->next;
-	while (current != NULL)
+	Node* target = head->next;
+	while (target != tail)
 	{
-		printf("%d\n", current->data);
-		current = current->next;
+		printf("target : %d\n", target->data);
+		target = target->next;
 	}
-
-	destroy_node();
-
-
-	return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
