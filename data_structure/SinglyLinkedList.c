@@ -12,7 +12,10 @@ Node* tail = NULL;
 void init_node();
 void insert_node_first(int data);
 void insert_node_last(int data);
-void destroy_node_all();
+void remove_node_first();
+void remove_node_last();
+void remove_node_all();
+void destructor();
 void view_data_all();
 
 int main()
@@ -20,14 +23,19 @@ int main()
 	init_node();
 	//insert_node_first(10);
 	//insert_node_first(20);
-	insert_node_last(60);
+	/*insert_node_last(60);
 	insert_node_first(20);
 	insert_node_last(70);
-	insert_node_last(80);
+	insert_node_last(80);*/
 
 	view_data_all();
 	printf("\n");
-	destroy_node_all();
+
+	remove_node_first();
+	view_data_all();
+	remove_node_all();
+
+	destructor();
 }
 
 void init_node()
@@ -63,7 +71,7 @@ void insert_node_last(int data)
 {
 	Node* newNode = malloc(sizeof(Node));
 	Node* target = head;
-	while(target->next != tail)
+	while (target->next != tail)
 	{
 		target = target->next;
 	}
@@ -76,7 +84,43 @@ void insert_node_last(int data)
 	}
 }
 
-void destroy_node_all()
+void remove_node_first()
+{
+	Node* target = head->next;
+	if (target != tail)
+	{
+		head->next = target->next;
+		free(target);
+	}
+	else
+	{
+		printf("지울게 없음\n");
+	}
+}
+
+void remove_node_last()
+{
+	Node* target = head;
+	Node* temp = NULL;
+	while (target->next != tail)
+	{
+		temp = target;
+		target = target->next;
+	}
+
+	if (temp != NULL)
+	{
+		temp->next = tail;
+		free(target);
+	}
+	else
+	{
+		printf("지울게 없음\n");
+	}
+
+}
+
+void remove_node_all()
 {
 	while (head->next != tail)
 	{
@@ -85,6 +129,11 @@ void destroy_node_all()
 		printf("destroy target %d\n", target->data);
 		free(target);
 	}
+}
+
+void destructor()
+{
+	remove_node_all();
 
 	printf("destroy head and tail\n");
 	free(head);
